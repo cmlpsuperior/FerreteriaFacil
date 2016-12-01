@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ClienteRequest extends FormRequest
+class EmpleadoUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,16 +26,16 @@ class ClienteRequest extends FormRequest
         return [
             'nombres' => 'required|regex:/^[\pL\s\-]+$/u|max:100',
             'apellidoPaterno' => 'required|regex:/^[\pL\s\-]+$/u|max:100',
-            'apellidoMaterno' => 'regex:/^[\pL\s\-]+$/u|max:100',
-            'numeroDocumento' => 'required|digits_between:8,20|numeric|unique:Cliente,numeroDocumento',
-            'fechaNacimiento' => 'date',
-            'genero' => 'numeric',
-            'telefono' => 'digits_between:4,20|numeric',
+            'apellidoMaterno' => 'required|regex:/^[\pL\s\-]+$/u|max:100',
+            //'numeroDocumento' => 'required|digits_between:8,20|numeric|unique:Empleado,numeroDocumento',
+            'fechaNacimiento' => 'required|date',
+                       
             'correo' => 'email|max:100',
-            'direccion' => 'max:100',
+            'licencia' => 'max:50',
+            //'fechaIngreso' => 'required|date',
 
-            'idTipoDocumento' => 'required|numeric',
-            'idZona' => 'numeric'
+            //'idTipoDocumento' => 'required|numeric',
+            'idCargo' => 'required|numeric'
         ];
     }
 }

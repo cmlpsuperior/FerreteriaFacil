@@ -19,3 +19,5 @@ Route::get('/', function () {
 Route::resource ('cliente','ClienteController' );
 Route::resource ('articulo','ArticuloController' );
 Route::resource ('empleado','EmpleadoController' );
+
+

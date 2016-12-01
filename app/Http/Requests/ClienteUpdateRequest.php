@@ -28,7 +28,7 @@ class ClienteUpdateRequest extends FormRequest
             'apellidoPaterno' => 'required|regex:/^[\pL\s\-]+$/u|max:100',
             'apellidoMaterno' => 'regex:/^[\pL\s\-]+$/u|max:100',
             //'numeroDocumento' => 'required|digits_between:8,20|numeric|unique:cliente,numeroDocumento',
-            'fechaNacimento' => 'date',
+            'fechaNacimiento' => 'date',
             'genero' => 'numeric',
             'telefono' => 'digits_between:4,20|numeric',
             'correo' => 'email|max:100',
