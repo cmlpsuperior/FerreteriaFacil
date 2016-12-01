@@ -126,7 +126,7 @@
       
       <script>
         $(document).ready(function() {
-                  
+           
           $(".dropdown-button").dropdown();
           $(".button-collapse").sideNav();      /*es para que boton de hamburgesa funcione*/
           

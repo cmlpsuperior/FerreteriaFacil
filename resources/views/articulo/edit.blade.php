@@ -1,0 +1,97 @@
+@extends ('base')
+
+@section ('contenido')
+
+<!--Contenido del cuerpo-->
+<br>
+<div class="container">
+
+  <!--Mostrara los errores que se hayan cometido:-->
+  @if (count($errors)>0)
+  <div class="row">
+    <div class="alert col s12">
+      <ul>
+          @foreach ($errors -> all() as $error)
+            <li>{{$error}}</li>
+          @endforeach
+      </ul>
+    </div>            
+  </div>
+  @endif
+
+  <div class="row">
+    <div class="col s12 blue-text">
+      <h5>Editar articulo N° {{ $articulo->idArticulo }}</h5>
+    </div>
+  </div>
+
+
+  <form action="{{ action('ArticuloController@update', $articulo->idArticulo) }}" method="POST">
+  <input type="hidden" name="_method" value="PUT">
+  <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
+    <div class="row">
+
+      <div class="col s12 m12 l8 offset-l2">
+        <div class="card">
+          
+          <div class="card-content blue white-text">
+              <span class="card-title">Datos</span>                                   
+          </div>
+
+          <div class="card-content">
+             
+
+            <div class="row">
+
+              <div class="input-field col s6">
+                <select name="idUnidadMedida">                          
+                  <option value="">Seleccionar</option>
+                  @foreach ($unidadesMedidas as $unidad)
+                  <option value="{{$unidad->idUnidadMedida}}" @if ($unidad->idUnidadMedida == $articulo->idUnidadMedida ) selected @endif>{{$unidad->nombre}}</option>
+                  @endforeach
+                </select>
+                <label>Unidad <span class="red-text">*</span></label>
+              </div> 
+                          
+            </div>
+
+            <div class="row">
+              <div class="input-field col s12">
+                <input id="nombre" type="text" class="validate" required value="{{ $articulo->nombre }}" name="nombre">
+                <label for="nombre">Nombre <span class="red-text">*</span></label>
+              </div>
+            </div>
+
+            <div class="row">
+              
+              <div class="input-field col s6">
+                <input id="precioBase" type="number" min="0" step="0.01" class="validate" required value="{{ $articulo->precioBase }}" name="precioBase">
+                <label for="precioBase">Precio S/ <span class="red-text">*</span></label>
+              </div>
+                          
+            </div>
+            
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!--Los botones del formulario-->
+    <div class="row">
+      <div class="input-field col s12 right-align">
+        <a class="waves-effect waves-light btn blue" href="{{ url('articulo')}}">Cancelar</a>
+        <button class="btn blue waves-effect waves-light" type="submit" name="action">Registrar
+          <i class="material-icons right">send</i>
+        </button>                
+      </div>              
+    </div> 
+
+  </form>  
+  
+
+</div>
+        
+
+@stop

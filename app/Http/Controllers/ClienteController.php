@@ -13,10 +13,6 @@ use App\Http\Requests\ClienteUpdateRequest;
 
 class ClienteController extends Controller
 {
-    public function __construct (){
-
-    }
-
     public function index(){
     	
 		$clientes = Cliente::orderBy('idCliente', 'desc')
