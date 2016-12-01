@@ -1,0 +1,30 @@
+
+
+/* ==========================================================================
+   Author's custom styles
+   ========================================================================== */
+
+
+
+body {
+     display: flex;
+     min-height: 100vh;
+     flex-direction: column;
+ }
+
+ main {
+     flex: 1 0 auto;
+     
+ }
+
+.tabs .indicator {
+    background-color: #b2dfdb !important;
+}
+
+ul.tabs > li.tab > a {
+	color: white !important;
+}
+
+
+
+
