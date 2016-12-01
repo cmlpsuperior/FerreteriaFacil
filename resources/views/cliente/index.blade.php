@@ -51,7 +51,7 @@
 					            <td>{{ $cliente->idCliente}}</td>
 					            <td>{{ $cliente->numeroDocumento}}</td>
 					            <td>{{ $cliente->apellidoPaterno}} {{$cliente->apellidoMaterno}}, {{$cliente->nombres}}</td>
-					            <td>@if ($cliente->zona !=null )  {{ $cliente->zona->idZona}} @endif</td>
+					            <td>@if ($cliente->zona !=null )  {{ $cliente->zona->nombre}} @endif</td>
 					            <td>@if ($cliente->correo !=null )  {{ $cliente->correo}} @endif</td>					            
 					            <td>
 					            	<a href="{{action('ClienteController@edit', ['id'=>$cliente->idCliente])}}" title="Editar"><i class="material-icons">edit</i></a>
