@@ -39,6 +39,10 @@ class Cliente extends Model
         return $this->belongsTo('App\Zona', 'idZona', 'idZona');
     }
 
+    public function tipoDocumento(){
+        return $this->belongsTo('App\TipoDocumento', 'idTipoDocumento', 'idTipoDocumento');
+    }
+
     /*
     public function pedidos()
     {
