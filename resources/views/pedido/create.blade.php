@@ -40,7 +40,7 @@
                    
 
           <div class="input-field col s3">                      
-            <input id="numeroDocumento" type="number" validate value="" name="numeroDocumento">
+            <input id="numeroDocumento" type="number" required validate value="" name="numeroDocumento">
             <label for="numeroDocumento">Documento <span class="red-text">*</span></label>
           </div> 
           
@@ -66,12 +66,12 @@
                 <option value="{{$zona->idZona}}" @if ( $zona->idZona == old('idZona') ) selected @endif >{{$zona->nombre}}</option>
               @endforeach
             </select>
-            <label for ="idZona">Zona <span class="red-text">*</span></label>
+            <label for ="idZona">Zona</label>
           </div> 
           
           <div class="input-field col s7">
             <input id="direccion" type="text"  value="" name="direccion">
-            <label for="direccion">Dirección <span class="red-text">*</span></label>
+            <label for="direccion">Dirección </label>
           </div>            
                       
         </div>
@@ -137,12 +137,13 @@
   <div class="row"  id="guardar">    
       <div class="col s12 right-align">        
           <a class="waves-effect waves-light btn blue" href="{{ url('pedido')}}">Cancelar</a>
-          <button class="btn waves-effect waves-light blue" type="submit" name="action" id="btnGuardar">Registrar
-            <i class="material-icons right">send</i>
-          </button> 
+          <a class="modal-trigger waves-effect waves-light btn blue" href="#modalCobrar" id="btnAbrirModalCobrar">Cobrar<i class="material-icons right">send</i></a>
+          
       </div>
   </div>
   
+  @include('pedido.modalCobrar') 
+
 </form>
 
 </div>
@@ -183,7 +184,8 @@
           console.log(data);  // for testing only
           cliente = data.cliente;
           if (cliente!=null){ //si el dni existe
-            $("#nombreCompleto").val(cliente.apellidoPaterno+' '+cliente.apellidoMaterno+' '+cliente.nombres);
+            $("#idCliente").val(cliente.idCliente);
+            $("#nombreCompleto").val(cliente.apellidoPaterno+' '+cliente.apellidoMaterno+', '+cliente.nombres);
             if (cliente.idZona!=null){
               $("#idZona option[value='"+cliente.idZona+"']").attr("selected", true);
               $("#idZona").material_select();
@@ -203,7 +205,7 @@
        
       
     });
-  //FIN del verificar lciente
+    //FIN del verificar lciente
 
 
     //Inicio: para que agrege a la tabla:
@@ -213,18 +215,10 @@
       agregar();      
       evaluar();
     });
-    //Fin: para que agrege a la tabla
-
-    //Inicio: agregar cliente
-    $("#btnAgregarClienteModal").click(function(){
-      agregarCliente();      
-      
-    });
-    //fin: agregar cliente
+    //Fin: para que agrege a la tabla    
 
     //Inicio: AJAX para actualizar la busqueda del modal
-    $("#btnBuscarModal").click(function(){
-      bMarca = $("#bMarca").val();
+    $("#btnBuscarModal").click(function(){      
       bNombre = $("#bNombre").val();
 
       miUrl=  "{{ url('pedido/buscarArticulos') }}";
@@ -233,11 +227,10 @@
       
 
       $.ajax({        
-        type: "POST",   
+        type: "GET",   
         url: miUrl,
         dataType : "JSON",
         data: {
-            marca: bMarca,
             nombre: bNombre,
             _token: CSRF_TOKEN
         },
@@ -247,16 +240,13 @@
           $.each(data, function(){
             
             $('#tblBuscarArticulos tbody').empty();
-            $.each(this, function(k, value){
-              
+            $.each(this, function(k, value){              
 
               $('#tblBuscarArticulos').append('<tr>'+
-                                                '<td><input type="number" name="" step="0.5" min="0.5" max ="'+value.stock +'" class="validate" ></td>'+
-                                                '<td>'+value.stock+'</td>'+
-                                                '<td>'+value.nombreUnidadMedida+'</td>'+
+                                                '<td> <div class="col s4"> <input type="number" name="" step="0.5" min="0.5"  class="validate" > </div> </td>'+
+                                                '<td>'+value.idUnidadMedida+'</td>'+
                                                 '<td><input type="hidden" name=""  value="'+value.idArticulo+'">'+value.nombre+'</td>'+
-                                                '<td>'+value.nombreMarca+'</td>'+
-                                                '<td><input type="number" name="" step="0.01" min="0.01" class="validate" value="'+value.precioBase+'"></td>'+
+                                                '<td> <div class="col s4"> <input type="number" name="" step="0.01" min="0.01" class="validate" value="'+value.precioBase+'"> </div> </td>'+
                                               '</tr>');
 
             });
@@ -274,74 +264,25 @@
        
       
     });
-    //Inicio: AJAX para actualizar la busqueda del modal
+    //FIN: AJAX para actualizar la busqueda del modal   
+
+    //INICIO: actualizar vuelto
+    $("#montoRecibido").change(function(){
 
 
-    //Inicio: AJAX para actualizar la busqueda cliente del modal
-    $("#btnBuscarClienteModal").click(function(){
-      bcNombre = $("#bcNombre").val();
-      bcNumeroDocumento = $("#bcNumeroDocumento").val();
+      montoRecibido = $("#montoRecibido").val();
+      montoTotal = $("#montoTotal").val();
 
-      miUrl=  "{{ url('pedido/buscarClientes') }}";
-      var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+      diferencia = montoRecibido - montoTotal;
 
+      if (diferencia>0)
+        $("#vuelto").html("S/ "+ diferencia);
+        
+      else
+        $("#vuelto").html("S/ 0.00");        
       
-
-      $.ajax({        
-        type: "POST",   
-        url: miUrl,
-        dataType : "JSON",
-        data: {
-            nombre: bcNombre,
-            numeroDocumento: bcNumeroDocumento,
-            _token: CSRF_TOKEN
-        },
-        success: function(data){
-
-          console.log(data);  // for testing only
-          
-          $.each(data, function(){
-            
-            $('#tblBuscarClientes tbody').empty();
-            $.each(this, function(k, value){
-              
-              if (value.credito == 1){
-                  datoCredito = 'Si';
-              }
-              else 
-                datoCredito = 'No';
-
-
-              $('#tblBuscarClientes').append('<tr>'+
-                                                '<td><input type="radio" name="radCliente" id="id'+k+'"><label for="id'+k+'">'+value.idCliente+'</label></td>'+
-                                                '<td>'+value.nombres+' '+value.apellidoPaterno+' '+ value.apellidoMaterno+'</td>'+
-                                                '<td>'+value.numeroDocumento+'</td>'+
-                                                '<td>'+value.fechaNacimiento+'</td>'+
-                                                '<td>'+datoCredito+'</td>'+
-                                                '<td hidden>'+value.telefono+'</td>'+
-
-                                                '<td hidden>'+value.idZona+'</td>'+
-                                                '<td hidden>'+value.direccion+'</td>'+
-                                                '<td hidden>'+value.referencia+'</td>'+
-                                                '<td hidden>'+value.idCliente+'</td>'+
-                                                '<td hidden>'+value.nombreZona+'</td>'+
-                                              '</tr>');
-
-            });
-            
-           
-          });
-          
-        },
-        error: function (e) {
-          console.log(e.responseText);
-        },
-
-      });
-       
       
     });
-    //Inicio: AJAX para actualizar la busqueda del modal
 
   });
 
@@ -354,35 +295,36 @@
     $('#tblBuscarArticulos tbody tr').each(function (index2) {
 
       var cantidad = $(this).find("td").eq(0).find("input").val();
+      var unidadMedida = $(this).find("td").eq(1).html();
+      var idArticulo = $(this).find("td").eq(2).find("input").val();
+      var nombreArticulo = $(this).find("td").eq(2).html();
+      var precio = $(this).find("td").eq(3).find("input").val();
 
-      var unidadMedida = $(this).find("td").eq(2).html();
-      var idArticulo = $(this).find("td").eq(3).find("input").val();
-      var nombreArticulo = $(this).find("td").eq(3).html();
-      var marca = $(this).find("td").eq(4).html();
-      var precio = $(this).find("td").eq(5).find("input").val();
       if (cantidad!="" && precio != ""){ //me aseguro que los campos tengan datos.
         subtotal[contador]= cantidad*precio;
-        total= total+ subtotal[contador];
+        total= total+ subtotal[contador];      
       
-      
-      var fila =  '<tr class="selected" id="fila'+contador+'">'+                    
-                    '<td><input type="hidden" name="cantidades[]" value="'+cantidad+'">'+cantidad+'</td>'+
-                    '<td><input type="hidden" name="idArticulos[]" value="'+idArticulo+'"> ('+unidadMedida+') '+nombreArticulo+ ' - '+marca+'</td>'+
-                    '<td><input type="hidden" name="preciosUnitarios[]" value="'+precio+'">'+precio+'</td>'+
-                    '<td>'+precio*cantidad+'</td>'+
-                    '<td><a class="modal-trigger" href="#!" onclick="eliminar('+contador+');" title="Eliminar"><i class="material-icons">delete</i></a></td>'
-                  '</tr>';
+        var fila =  '<tr class="selected" id="fila'+contador+'">'+                    
+                      '<td><input type="hidden" name="cantidades[]" value="'+cantidad+'">'+cantidad+'</td>'+
+                      '<td>'+unidadMedida+'</td>'+
+                      '<td><input type="hidden" name="idArticulos[]" value="'+idArticulo+'">'+nombreArticulo+ '</td>'+
+                      '<td><input type="hidden" name="preciosUnitarios[]" value="'+precio+'">'+precio+'</td>'+
+                      '<td>'+precio*cantidad+'</td>'+
+                      '<td><a class="modal-trigger" href="#!" onclick="eliminar('+contador+');" title="Eliminar"><i class="material-icons">cancel</i></a></td>'
+                    '</tr>';
 
-      contador++;
+        contador++;
 
-      //actualizamos el total
-      $("#montoTotalH").html("S/. "+ total); //valor que muestro
-      $("#montoTotal").val(total); //valor que envio al controller
-      //agregamos al detalle      
-      $("#detalles").append(fila);
+        //actualizamos el total
+        $("#montoTotalH").html("S/ "+ total); //valor que muestro
+        $("#montoTotal").val(total); //valor que envio al controller
+        $("#montoTotalModal").html("S/ "+ total); //monto del modal
 
-      //limpiamos el campos
-      $(this).find("td").eq(0).find("input").val("");
+        //agregamos al detalle      
+        $("#detalles").append(fila);
+
+        //limpiamos el campos
+        $(this).find("td").eq(0).find("input").val("");
 
       }
     });   
@@ -403,55 +345,13 @@
     total= total-subtotal[index];
     $("#montoTotalH").html("S/. "+ total);
     $("#montoTotal").val(total);
+    $("#montoTotalModal").html("S/ "+ total); //monto del modal
+
+
     $("#fila"+index).remove();
     evaluar();
   }
   
-
-
-  //funciones y variables de apoyo para el cliente
-  function agregarCliente(){
-    $('#tblBuscarClientes tbody tr').each(function (index2) {
-
-      
-      var radio = $(this).find("td").eq(0).find("input").is(":checked"); //me indica si el radio fue seleccionado o no :)
-      var nombre = $(this).find("td").eq(1).html();
-      var numeroDocumento = $(this).find("td").eq(2).html();
-      var credito = $(this).find("td").eq(4).html();
-      var telefono = $(this).find("td").eq(5).html();
-      var idZona = $(this).find("td").eq(6).html();
-      var direccion = $(this).find("td").eq(7).html();
-      var referencia = $(this).find("td").eq(8).html();
-      var idCliente = $(this).find("td").eq(9).html();
-      var nombreZona = $(this).find("td").eq(10).html();
-
-      //alert(nombre +" "+ numeroDocumento+ " "+ credito +" " +telefono+" " + idZona + " "+ nombreZona +" "+ direccion +" " + referencia);
-      
-      if (radio){ //veo quien fue seleccionado      
-        //Actualizamos los valores de los campos:
-        $("#idCliente").val(idCliente);
-        $("#numeroDocumento").val(numeroDocumento);
-        $("#nombreCompleto").val(nombre);
-        $("#credito").val(credito);
-
-        $("#telefono").val(telefono);
-        $("#direccion").val(direccion);
-        $("#referencia").val(referencia);
-
-        $("#idZona option[value='"+idZona+"']").attr("selected", true);
-        $("#idZona").material_select();
-        //$("#idZona").val('"'+idZona+'"');
-
-        Materialize.updateTextFields(); //para que funcione el materialize
-        return false; //esto hace que acabe la iteracion
-
-      }
-      
-
-    });   
-    
-  }
-
   
 </script>
 @stop

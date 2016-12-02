@@ -28,7 +28,6 @@
                 	  	                         
                 </div>
 
-
             	<div class="card-content">
 					<table class= "bordered highlight">
 				        <thead>
@@ -49,7 +48,7 @@
 					            <tr>
 					            	<td>{{ $pedido->idPedido }}</td>
 					            	<td>{{ $pedido->cliente->apellidoPaterno }} {{ $pedido->cliente->apellidoMaterno }}, {{ $pedido->cliente->nombres }} </td>			            
-						            <td>{{ $pedido->zona->nombre}}</td>
+						            <td>@if ($pedido->idZona != null) {{ $pedido->zona->nombre }}@endif</td>
 
 						            <td>{{ count($pedido->articulos) }}</td>
 						            <td>{{ $pedido->montoTotal }}</td>

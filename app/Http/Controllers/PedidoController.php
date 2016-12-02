@@ -12,7 +12,7 @@ use App\Zona;
 use App\Empleado;
 use App\Articulo;
 use App\Pedido;
-use App\Http\Requests\PedidoRequest;
+use Illuminate\Support\Facades\Auth;
 
 class PedidoController extends Controller
 {
@@ -32,7 +32,7 @@ class PedidoController extends Controller
     	return view('pedido.create', ['zonas'=>$zonas, 'clientes'=> $clientes,  'articulos'=>$articulos]);
     }
 
-    public function store (PedidoRequest $request){
+    public function store (Request $request){
         
         //inicio una transaccion
         DB::beginTransaction();
@@ -41,19 +41,23 @@ class PedidoController extends Controller
 	    	//datos generales del pedido
 	    	$pedido->fechaRegistro= date("Y-m-d H:i:s");
 
-	    	$pedido->montoTotal= $request->get('montoTotal');
-	    	$pedido->montoPagado= $request->get('montoPagado');
+	    	$pedido->montoTotal= $request->get('montoTotal');	    	
 
-	    	if ( $request->get('montoTotal') <= get('montoPagado') )
-	        	$pedido->estado= 'Adeuda';
-	        else
+	    	if ( $request->get('montoTotal') <= $request->get('montoRecibido') ){
 	        	$pedido->estado= 'Completo';
+                $pedido->montoPagado= $request->get('montoTotal');
+            }
+	        else{
+                $pedido->estado= 'Adeuda';
+                $pedido->montoPagado= $request->get('montoRecibido');
+            }	        	
 
-	        $pedido->direccion = $request->get('direccion');
+            $pedido->idCliente= $request->get('idCliente');
+            $pedido->idEmpleado= Auth::User()->empleado->idEmpleado;
 
-	        $pedido->idZona= $request->get('idZona');
-	    	$pedido->idCliente= $request->get('idCliente');
-            $pedido->idEmpleado= Auth::User()->idEmpleado;
+            //no obligatorios
+            if ( $request->get('direccion')!='' ) $pedido->direccion = $request->get('direccion');
+            if ( $request->get('idZona')!='' ) $pedido->idZona = $request->get('idZona');
 
 	    	$pedido->save();
 
@@ -71,7 +75,7 @@ class PedidoController extends Controller
 	    		$pedido->articulos()->attach($idArticulos[$contador], [
 									'cantidad'=>$cantidades[$contador],
 									'precioUnitario'=>$preciosUnitarios[$contador],
-									'monto'=> $preciosUnitarios[$contador]*$cantidad[$contador]
+									'monto'=> $preciosUnitarios[$contador]*$cantidades[$contador]
 	    							]);
 
                 //siguiente fila
