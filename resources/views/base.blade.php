@@ -24,42 +24,24 @@
 
             <!--Menu de barra de haburguesa-->
             <ul id="slide-out" class="side-nav">
-              <li>
-                <div class="userView">
-                  <img class="background" width= "100%" src="{{ asset('img/md_dia.jpg')}}">
-                  <i class="material-icons center">account_circle</i>
-                  <a href="#!"><span class="white-text name"></span></a>
-                  <a href="#!"><span class="white-text email"></span></a>
+              <li><div class="userView">
+                <div class="background">
+                  <img width= "100%" src="{{ asset('img/md_noche.png')}}">
                 </div>
-              </li>             
-              
-              <li><a class="subheader">Menu</a></li>
+                <a href="#!user"><i class="material-icons"></i></a>
+                
+                <span class="white-text name">{{ Auth::User()->empleado->nombres }}</span>                
+                <span class="white-text email">{{ Auth::User()->empleado->apellidoPaterno }} {{ Auth::User()->empleado->apellidoMaterno }}</span>
+                <span class="white-text name">{{ Auth::User()->empleado->cargo->nombre }}</span>
+              </div></li>
+              <li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
+              <li><a href="#!">Second Link</a></li>
               <li><div class="divider"></div></li>
+              <li><a class="subheader">Subheader</a></li>
+              <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
+            </ul>
 
-              <li class="no-padding">
-                <ul class="collapsible collapsible-accordion">
-                                    
-
-                  <li class="bold">
-                    <a class="collapsible-header waves-effect waves-teal"><i class="material-icons">settings</i>Mantenimiento</a>
-
-                    <div class="collapsible-body">
-                      <ul>
-                        <li><a >Pedidos</a></li> 
-                        <li><a href="{{ url('cliente') }}">Clientes</a></li>                        
-                        <li><a href="{{ url('articulo') }}">Artículos</a></li>          
-                        <li><a href="#!">Zonas</a></li>          
-                        <li><a href="{{ url('empleado') }}">Empleados</a></li>
-                        <li><a href="#!">Vehículos</a></li>
-                      </ul>
-                    </div>
-
-                  </li>
-
-                </ul>   
-              </li>
-            </ul> 
-            
+                       
             
             <a href="#" data-activates="slide-out" class="button-collapse show-on-large"><i class="material-icons">menu</i></a>
             <!--Fin barra de hamburgauesa-->
@@ -68,7 +50,7 @@
 
             <!--Botones de la derecha-->
             <ul class="right ">
-              <li><a ><i class="material-icons">exit_to_app</i></a></li>
+              <li><a href=" {{ action('LoginController@logout') }}" ><i class="material-icons">exit_to_app</i></a></li>
             </ul>
             
             

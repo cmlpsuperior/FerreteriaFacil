@@ -27,7 +27,8 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function empleado (){
-        return $this->belongsTo ('PlanificaMYPE\Empleado', 'idUser', 'idUser');
+    public function empleado()
+    {
+        return $this->hasOne('App\Empleado', 'idUser', 'id');
     }
 }

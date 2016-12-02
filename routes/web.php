@@ -11,13 +11,16 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/','LoginController@index' )->name('login.index');
 
 
 Route::resource ('cliente','ClienteController' );
 Route::resource ('articulo','ArticuloController' );
 Route::resource ('empleado','EmpleadoController' );
+
+//Login
+Route::get('login', 'LoginController@index' )->name('login.index');
+Route::post('login', 'LoginController@autenticar' )->name('login.autenticar');
+Route::get('login/logout', 'LoginController@logout' )->name('login.logout');
 
 

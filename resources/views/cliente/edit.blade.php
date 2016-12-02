@@ -161,8 +161,8 @@
   <!--Los botones del formulario-->
   <div class="row">
     <div class="input-field col s12 right-align">
-      <a class="waves-effect waves-light btn" href="{{ url('cliente')}}">Cancelar</a>
-      <button class="btn waves-effect waves-light" type="submit" name="action">Actualizar
+      <a class="waves-effect waves-light btn blue" href="{{ url('cliente')}}">Cancelar</a>
+      <button class="btn blue waves-effect waves-light" type="submit" name="action">Actualizar
         <i class="material-icons right">send</i>
       </button>                
     </div>              

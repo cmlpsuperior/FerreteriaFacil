@@ -18,8 +18,8 @@ class Usuario extends Model
     	'password'
     ];
 
-    public function empleados()
+    public function empleado()
     {
-        return $this->hasMany('App\Empleado', 'idUser', 'idUser');
+        return $this->hasOne('App\Empleado', 'idUser', 'idUser');
     }
 }
