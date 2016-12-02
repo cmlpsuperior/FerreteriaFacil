@@ -24,3 +24,9 @@ Route::post('login', 'LoginController@autenticar' )->name('login.autenticar');
 Route::get('login/logout', 'LoginController@logout' )->name('login.logout');
 
 
+//Pedido
+Route::get('pedido', 'PedidoController@index' )->name('pedido.index');
+Route::post('pedido', 'PedidoController@store' )->name('pedido.store');
+Route::get('pedido/create', 'PedidoController@create' )->name('pedido.create');
+Route::get('pedido/buscarArticulos', 'PedidoController@buscarArticulos' )->name('pedido.buscarArticulos'); //AJAX
+Route::get('pedido/confirmarCliente', 'PedidoController@confirmarCliente' )->name('pedido.confirmarCliente'); //AJAX

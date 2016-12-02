@@ -26,5 +26,11 @@ class Articulo extends Model
         return $this->belongsTo('App\UnidadMedida', 'idUnidadMedida', 'idUnidadMedida');
     }
 
+
+    //relacion de muchos a muchos con pedidos:
+    public function pedidos (){
+        return $this->belongsToMany('App\Pedido', 'DetallePedido', 'idArticulo', 'idPedido')
+                    ->withPivot('cantidad', 'precioUnitario', 'monto');
+    }
     
 }

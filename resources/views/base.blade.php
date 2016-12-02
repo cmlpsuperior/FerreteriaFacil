@@ -24,21 +24,39 @@
 
             <!--Menu de barra de haburguesa-->
             <ul id="slide-out" class="side-nav">
-              <li><div class="userView">
-                <div class="background">
-                  <img width= "100%" src="{{ asset('img/md_noche.png')}}">
+              <li>
+                <div class="userView">
+                  <div class="background">
+                    <img width= "100%" src="{{ asset('img/md_noche.png')}}">
+                  </div>
+                  <a href="#!user"><i class="material-icons"></i></a>
+                  
+                  <span class="white-text name">{{ Auth::User()->empleado->nombres }}</span>                
+                  <span class="white-text email">{{ Auth::User()->empleado->apellidoPaterno }} {{ Auth::User()->empleado->apellidoMaterno }}</span>
+                  <span class="white-text name">{{ Auth::User()->empleado->cargo->nombre }}</span>
                 </div>
-                <a href="#!user"><i class="material-icons"></i></a>
-                
-                <span class="white-text name">{{ Auth::User()->empleado->nombres }}</span>                
-                <span class="white-text email">{{ Auth::User()->empleado->apellidoPaterno }} {{ Auth::User()->empleado->apellidoMaterno }}</span>
-                <span class="white-text name">{{ Auth::User()->empleado->cargo->nombre }}</span>
-              </div></li>
-              <li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
-              <li><a href="#!">Second Link</a></li>
+              </li>
+              
+              <li><a class="subheader">Menú</a></li>
               <li><div class="divider"></div></li>
-              <li><a class="subheader">Subheader</a></li>
-              <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
+              
+
+              <li class="no-padding">
+                <ul class="collapsible collapsible-accordion">
+                  <li>
+                    <a class="collapsible-header waves-effect">Mantenimiento<i class="material-icons">settings</i></a>
+                    <div class="collapsible-body">
+                      <ul>
+                        <li><a href="{{ action('ClienteController@index') }}">Clientes</a></li>
+                        <li><a href="{{ action('EmpleadoController@index') }}">Empleados</a></li>
+                        <li><a href="{{ action('ArticuloController@index') }}">Materiales</a></li>
+                        <li><a href="{{ action('PedidoController@index') }}">Pedidos</a></li>
+                      </ul>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+
             </ul>
 
                        
