@@ -19,7 +19,7 @@
         
       <header>
           <!--La barra superior principal-->
-        <nav class="blue darken-3">
+        <nav class="blue darken-2">
           <div class="nav-wrapper container">
 
             <a href="#" class="brand-logo center">FerreteriaFacil</a>
@@ -31,7 +31,7 @@
       </header>
         
         
-      <main class="blue darken-3">
+      <main class="blue darken-2 ">
         <div class="container">
 
         <!--Mostrara los errores que se hayan cometido:-->
@@ -71,7 +71,7 @@
               <div class="col s12 m6 l6 offset-m3 offset-l3">
                 <div class="card ">
 
-                  <div class="card-content blue  white-text center">
+                  <div class="card-content blue darken-3 white-text center">
                       
                       <span class="card-title ">Iniciar sesión</span>                  
                   </div>

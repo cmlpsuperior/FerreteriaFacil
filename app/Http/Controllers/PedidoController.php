@@ -13,6 +13,7 @@ use App\Empleado;
 use App\Articulo;
 use App\Pedido;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\PedidoRequest;
 
 class PedidoController extends Controller
 {
@@ -32,7 +33,7 @@ class PedidoController extends Controller
     	return view('pedido.create', ['zonas'=>$zonas, 'clientes'=> $clientes,  'articulos'=>$articulos]);
     }
 
-    public function store (Request $request){
+    public function store (PedidoRequest $request){
         
         //inicio una transaccion
         DB::beginTransaction();
@@ -71,12 +72,29 @@ class PedidoController extends Controller
 	    	$contador=0;
 	    	$cantidadFilas= count($idArticulos); //cuento cuantas filas tiene el detalle de pedido
 	    	while ($contador<$cantidadFilas){
-                //inserto en la tabla detallePedido
-	    		$pedido->articulos()->attach($idArticulos[$contador], [
-									'cantidad'=>$cantidades[$contador],
-									'precioUnitario'=>$preciosUnitarios[$contador],
-									'monto'=> $preciosUnitarios[$contador]*$cantidades[$contador]
-	    							]);
+                
+                $detallePrueba = DB::table('DetallePedido')
+                                    ->where('idPedido','=',$pedido->idPedido)
+                                    ->where('idArticulo','=',$idArticulos[$contador])
+                                    ->first();
+                if ($detallePrueba !=null ){ //si existe, sumamos cantidades
+                   
+                    $cantidadNueva = $detallePrueba->cantidad + $cantidades[$contador];
+                    $precio = $detallePrueba->precioUnitario;
+
+                    DB::table('DetallePedido')
+                                    ->where('idPedido','=',$pedido->idPedido)
+                                    ->where('idArticulo','=',$idArticulos[$contador])
+                                    ->update(['cantidad'=> $cantidadNueva, 'monto' => $cantidadNueva*$precio]);
+                }
+                else{ //No existe
+                    //inserto en la tabla detallePedido
+                    $pedido->articulos()->attach($idArticulos[$contador], [
+                                    'cantidad'=>$cantidades[$contador],
+                                    'precioUnitario'=>$preciosUnitarios[$contador],
+                                    'monto'=> $preciosUnitarios[$contador]*$cantidades[$contador]
+                                    ]);
+                }
 
                 //siguiente fila
 	    		$contador++;
@@ -111,7 +129,8 @@ class PedidoController extends Controller
 
         //primero buscamos en nombre
         if ($buscarNombre != ''){
-            $articulos =  Articulo::where ('nombre','like','%'.$buscarNombre.'%')
+            $articulos =  Articulo::with('unidadMedida')
+                ->where ('nombre','like','%'.$buscarNombre.'%')
                 ->where('activo','=',1)
                 ->orderBy('nombre', 'asc')
                 ->get();
@@ -119,7 +138,8 @@ class PedidoController extends Controller
         
         //si no se ingreso ningun campo, listamos todos los articulos
         else{
-            $articulos =  Articulo::where('activo','=',1)
+            $articulos =  Articulo::with('unidadMedida')
+                ->where('activo','=',1)
                 ->orderBy('nombre', 'asc')
                 ->get();
         }

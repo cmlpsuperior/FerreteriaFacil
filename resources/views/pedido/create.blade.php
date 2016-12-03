@@ -36,16 +36,16 @@
         
         <div class="row">
           <!--codigo del cliente esta oculto pero sera actualizado por JS-->
-          <input id="idCliente" type="hidden" value="" name="idCliente">
+          <input id="idCliente" type="hidden" value="{{ old('idCliente')}}" name="idCliente">
                    
 
           <div class="input-field col s3">                      
-            <input id="numeroDocumento" type="number" required validate value="" name="numeroDocumento">
+            <input id="numeroDocumento" type="number" required validate value="{{ old('numeroDocumento')}}" name="numeroDocumento">
             <label for="numeroDocumento">Documento <span class="red-text">*</span></label>
           </div> 
           
           <div class="input-field col s7">
-            <input id="nombreCompleto" type="text" readonly value="" name="nombreCompleto">
+            <input id="nombreCompleto" type="text" readonly value="{{ old('nombreCompleto')}}" name="nombreCompleto">
             <label for="nombreCompleto">Nombre completo <span class="red-text">*</span></label>
           </div>
 
@@ -70,7 +70,7 @@
           </div> 
           
           <div class="input-field col s7">
-            <input id="direccion" type="text"  value="" name="direccion">
+            <input id="direccion" type="text"  value="{{ old('direccion')}}" name="direccion">
             <label for="direccion">Dirección </label>
           </div>            
                       
@@ -106,6 +106,7 @@
                 <th data-field="cantidad">Cantidad</th>
                 <th data-field="unidad">Unidad</th>
                 <th data-field="nombre">Nombre</th>
+
                 <th data-field="precio">P.U. S/</th>
                 <th data-field="subtotal">Subtotal S/</th>
                 <th data-field="acciones">Acciones</th>
@@ -113,6 +114,7 @@
           </thead>
 
           <tbody>
+            
             
           </tbody>
           <tfoot>
@@ -137,7 +139,7 @@
   <div class="row"  id="guardar">    
       <div class="col s12 right-align">        
           <a class="waves-effect waves-light btn blue" href="{{ url('pedido')}}">Cancelar</a>
-          <a class="modal-trigger waves-effect waves-light btn blue" href="#modalCobrar" id="btnAbrirModalCobrar">Cobrar<i class="material-icons right">send</i></a>
+          <a class="waves-effect waves-light btn blue" id="btnAbrirModalCobrar">Cobrar<i class="material-icons right">send</i></a>
           
       </div>
   </div>
@@ -164,6 +166,17 @@
 
      // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
     $('.modal').modal();
+
+    //la condicion para abrir el modal, solo cuando se ha agregado a un cliente valido
+    $("#btnAbrirModalCobrar").click(function(){
+      idCliente =   $("#idCliente").val();
+
+      if (idCliente !='')
+        $('#modalCobrar').modal('open');
+      else
+        alert('Debe ingresar un cliente valido');
+    });
+
 
     //verificamos si el dni ingresado existe
     $("#btnConfirmarCliente").click(function(){
@@ -192,8 +205,10 @@
             }
             $("#direccion").val(cliente.direccion);            
           }
-          else
+          else{
+            $("#idCliente").val('');
             $("#nombreCompleto").val('No está registrado');
+          }
 
           Materialize.updateTextFields(); //para que funcione el materialize        
         },
@@ -243,10 +258,10 @@
             $.each(this, function(k, value){              
 
               $('#tblBuscarArticulos').append('<tr>'+
-                                                '<td> <div class="col s4"> <input type="number" name="" step="0.5" min="0.5"  class="validate" > </div> </td>'+
-                                                '<td>'+value.idUnidadMedida+'</td>'+
-                                                '<td><input type="hidden" name=""  value="'+value.idArticulo+'">'+value.nombre+'</td>'+
-                                                '<td> <div class="col s4"> <input type="number" name="" step="0.01" min="0.01" class="validate" value="'+value.precioBase+'"> </div> </td>'+
+                                                '<td> <div class="col s4"> <input type="number" step="0.5" min="0.5"  class="validate" > </div> </td>'+
+                                                '<td> '+value.unidad_medida.nombre+'</td>'+
+                                                '<td> <input type="hidden" value="'+value.idArticulo+'">'+value.nombre+'</td>'+
+                                                '<td> <div class="col s4"> <input type="number" step="0.01" min="0.01" class="validate" value="'+value.precioBase+'"> </div> </td>'+
                                               '</tr>');
 
             });
@@ -297,39 +312,67 @@
       var cantidad = $(this).find("td").eq(0).find("input").val();
       var unidadMedida = $(this).find("td").eq(1).html();
       var idArticulo = $(this).find("td").eq(2).find("input").val();
-      var nombreArticulo = $(this).find("td").eq(2).html();
+      var nombreArticulo = $(this).find("td").eq(2).text(); //es mejor usar text
       var precio = $(this).find("td").eq(3).find("input").val();
 
+      //alert (nombreArticulo);
       if (cantidad!="" && precio != ""){ //me aseguro que los campos tengan datos.
-        subtotal[contador]= cantidad*precio;
-        total= total+ subtotal[contador];      
-      
-        var fila =  '<tr class="selected" id="fila'+contador+'">'+                    
-                      '<td><input type="hidden" name="cantidades[]" value="'+cantidad+'">'+cantidad+'</td>'+
-                      '<td>'+unidadMedida+'</td>'+
-                      '<td><input type="hidden" name="idArticulos[]" value="'+idArticulo+'">'+nombreArticulo+ '</td>'+
-                      '<td><input type="hidden" name="preciosUnitarios[]" value="'+precio+'">'+precio+'</td>'+
-                      '<td>'+precio*cantidad+'</td>'+
-                      '<td><a class="modal-trigger" href="#!" onclick="eliminar('+contador+');" title="Eliminar"><i class="material-icons">cancel</i></a></td>'
-                    '</tr>';
+        
+        //yaExiste = verificarArticuloAIngresar ( parseInt(idArticulo), parseInt(cantidad) ); //si ya existe, no hace nada
+       
+        //if (yaExiste == 0){ //no existe, lo agreggo a la lsita
+          subtotal[contador]= cantidad*precio;
+          total= total+ subtotal[contador];      
+          
+          var fila =  '<tr class="selected" id="fila'+contador+'">'+                    
+                        '<td><input type="hidden" name="cantidades[]" value="'+cantidad+'">'+cantidad+'</td>'+
+                        '<td><input type="hidden" name="unidadesMedidas[]" value="'+ unidadMedida +'">'+unidadMedida+'</td>'+
+                        '<td><input type="hidden" name="nombres[]" value="'+ nombreArticulo +'">'+nombreArticulo+ '</td>'+
+                        '<td><input type="hidden" name="preciosUnitarios[]" value="'+precio+'">'+precio+'</td>'+
+                        '<td><input type="hidden" name="idArticulos[]" value="'+idArticulo+'">'+precio*cantidad+'</td>'+
+                        '<td><a class="modal-trigger" href="#!" onclick="eliminar('+contador+');" title="Eliminar"><i class="material-icons">cancel</i></a></td>'
+                      '</tr>';
 
-        contador++;
+          contador++;
 
-        //actualizamos el total
-        $("#montoTotalH").html("S/ "+ total); //valor que muestro
-        $("#montoTotal").val(total); //valor que envio al controller
-        $("#montoTotalModal").html("S/ "+ total); //monto del modal
+          //actualizamos el total
+          $("#montoTotalH").html("S/ "+ total); //valor que muestro
+          $("#montoTotal").val(total); //valor que envio al controller
+          $("#montoTotalModal").html("S/ "+ total); //monto del modal
 
-        //agregamos al detalle      
-        $("#detalles").append(fila);
+          //agregamos al detalle      
+          $("#detalles").append(fila);
 
-        //limpiamos el campos
-        $(this).find("td").eq(0).find("input").val("");
-
+          //limpiamos el campos
+          $(this).find("td").eq(0).find("input").val("");
+        //}
       }
+        
+
+      
     });   
     
   }
+
+  /*
+  function verificarArticuloAIngresar (idArticulo, cantidad){
+    existe = 0;
+    $('#detalles tbody tr').each(function (index3){
+        idArticuloEx = parseInt(  $(this).find("td").eq(4).find("input").val()  );
+        cantidadEx = parseInt(  $(this).find("td").eq(0).text()  );
+        
+        if (idArticuloEx == idArticulo){ // ya existia en la lista detalle
+          nuevaCantidad = cantidadEx + cantidad;
+          $(this).find("td").eq(0).text(nuevaCantidad);
+          existe=1;
+          return false; //esto hace salir del bucle .each
+        }
+
+    });
+    return existe;
+  }
+  */
+  
 
   function evaluar(){
     if (total>0){
