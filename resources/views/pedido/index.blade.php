@@ -38,7 +38,9 @@
 
 				                <th data-field="productos">N° productos</th>
 				                <th data-field="montoTotal">Monto total S/</th>
-				                <th data-field="estado">Estado</th>	   
+				                <th data-field="estado">Estado</th>	
+
+				                <th data-field="acciones">Acciones</th>	
 				            </tr>
 				        </thead>
 
@@ -53,6 +55,10 @@
 						            <td>{{ count($pedido->articulos) }}</td>
 						            <td>{{ $pedido->montoTotal }}</td>
 						            <td>{{ $pedido->estado}}</td>
+
+						            <td>
+						            	<a href="{{action('PDFController@obtenerPedido', ['id'=>$pedido->idPedido])}}" title="Imprimir" target="_blank"><i class="material-icons">print</i></a>
+						            </td>
 						        </tr> 
 					        @endforeach
 

@@ -30,3 +30,8 @@ Route::post('pedido', 'PedidoController@store' )->name('pedido.store');
 Route::get('pedido/create', 'PedidoController@create' )->name('pedido.create');
 Route::get('pedido/buscarArticulos', 'PedidoController@buscarArticulos' )->name('pedido.buscarArticulos'); //AJAX
 Route::get('pedido/confirmarCliente', 'PedidoController@confirmarCliente' )->name('pedido.confirmarCliente'); //AJAX
+
+
+
+//PDF
+Route::get('pdf/obtenerPedido/{id}', 'PDFController@obtenerPedido' )->name('pdf.obtenerPedido');
