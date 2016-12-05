@@ -53,6 +53,7 @@
 					            <td>
 
 					            	<a href="{{action('ArticuloController@edit', ['id'=>$articulo->idArticulo])}}" title="Editar"><i class="material-icons">edit</i></a>
+					            	<!--<a href="{{action('ArticuloController@precioZona', ['id'=>$articulo->idArticulo])}}" title="otros precios"><i class="material-icons">attach_money</i></a>-->
 					            	<a class="modal-trigger" href="#modal-delete-{{$articulo->idArticulo}}" title="Eliminar"><i class="material-icons">delete</i></a>
 					            </td>
 

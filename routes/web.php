@@ -17,8 +17,13 @@ Route::get('/','LoginController@index' )->name('login.index');
 Route::group(['middleware' => 'login'], function()
 {
     Route::resource ('cliente','ClienteController' );
+
 	Route::resource ('articulo','ArticuloController' );
+	Route::get('articulo/{id}/precioZona', 'ArticuloController@precioZona' )->name('pedido.precioZona');
+	Route::post('articulo/{id}/precioZona', 'ArticuloController@precioZona_procesar' )->name('pedido.precioZona_procesar');
+
 	Route::resource ('empleado','EmpleadoController' );
+
 	Route::resource ('zona','ZonaController' );
 
 	//Pedido
