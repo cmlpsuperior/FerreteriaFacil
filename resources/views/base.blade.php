@@ -51,6 +51,7 @@
                         <li><a href="{{ action('EmpleadoController@index') }}">Empleados</a></li>
                         <li><a href="{{ action('ArticuloController@index') }}">Materiales</a></li>
                         <li><a href="{{ action('PedidoController@index') }}">Pedidos</a></li>
+                        <li><a href="{{ action('ZonaController@index') }}">Zonas</a></li>
                       </ul>
                     </div>
                   </li>

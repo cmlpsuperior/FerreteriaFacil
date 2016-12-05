@@ -18,6 +18,7 @@ Route::resource ('cliente','ClienteController' );
 Route::resource ('articulo','ArticuloController' );
 Route::resource ('empleado','EmpleadoController' );
 
+
 //Login
 Route::get('login', 'LoginController@index' )->name('login.index');
 Route::post('login', 'LoginController@autenticar' )->name('login.autenticar');
@@ -30,3 +31,7 @@ Route::post('pedido', 'PedidoController@store' )->name('pedido.store');
 Route::get('pedido/create', 'PedidoController@create' )->name('pedido.create');
 Route::get('pedido/buscarArticulos', 'PedidoController@buscarArticulos' )->name('pedido.buscarArticulos'); //AJAX
 Route::get('pedido/confirmarCliente', 'PedidoController@confirmarCliente' )->name('pedido.confirmarCliente'); //AJAX
+
+
+
+Route::resource ('zona','ZonaController' );
