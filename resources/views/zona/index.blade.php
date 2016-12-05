@@ -37,7 +37,7 @@
 				         	<tr>
 				         		<th data-field="dni">Código</th>
 				                <th data-field="dni">Nombre</th>
-				                <th data-field="nombre">Monto de flete S/</th>	
+				                <th data-field="nombre">Monto de flete (S/)</th>	
 				                <th data-field="acciones">acciones</th>
 				            </tr>
 				        </thead>
@@ -48,7 +48,7 @@
 				            <tr>
 					            <td>{{ $zona->idZona}}</td>
 					            <td>{{ $zona->nombre}}</td>
-					            <td>{{ $zona->montoFlete}}</td>					            
+					            <td>S/ {{ number_format($zona->montoFlete, 2, '.'," ") }}</td>					            
 					            <td>
 					            	<a href="{{action('ZonaController@edit', ['id'=>$zona->idZona])}}" title="Editar"><i class="material-icons">edit</i></a>
 					            </td>

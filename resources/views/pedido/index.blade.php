@@ -28,7 +28,6 @@
                 	  	                         
                 </div>
 
-
             	<div class="card-content">
 					<table class= "bordered highlight">
 				        <thead>
@@ -39,7 +38,9 @@
 
 				                <th data-field="productos">N° productos</th>
 				                <th data-field="montoTotal">Monto total S/</th>
-				                <th data-field="estado">Estado</th>	   
+				                <th data-field="estado">Estado</th>	
+
+				                <th data-field="acciones">Acciones</th>	
 				            </tr>
 				        </thead>
 
@@ -49,11 +50,15 @@
 					            <tr>
 					            	<td>{{ $pedido->idPedido }}</td>
 					            	<td>{{ $pedido->cliente->apellidoPaterno }} {{ $pedido->cliente->apellidoMaterno }}, {{ $pedido->cliente->nombres }} </td>			            
-						            <td>{{ $pedido->zona->nombre}}</td>
+						            <td>@if ($pedido->idZona != null) {{ $pedido->zona->nombre }}@endif</td>
 
 						            <td>{{ count($pedido->articulos) }}</td>
 						            <td>{{ $pedido->montoTotal }}</td>
 						            <td>{{ $pedido->estado}}</td>
+
+						            <td>
+						            	<a href="{{action('PDFController@obtenerPedido', ['id'=>$pedido->idPedido])}}" title="Imprimir" target="_blank"><i class="material-icons">print</i></a>
+						            </td>
 						        </tr> 
 					        @endforeach
 

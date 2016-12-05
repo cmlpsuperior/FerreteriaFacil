@@ -25,3 +25,10 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+
+
+
+//PASOS PARA COMENZR EL SISTEMA:
+
+- PDF: se usa la libreria domPDF, el link del tutorial es:
+	https://www.youtube.com/watch?v=slCwrm64IWA
