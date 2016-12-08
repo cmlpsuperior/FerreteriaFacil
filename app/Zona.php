@@ -18,14 +18,17 @@ class Zona extends Model
     ];
 
     //relaciones con otros modelos:
-    public function clientes()
-    {
+    public function clientes()    {
         return $this->hasMany('App\Cliente', 'idZona', 'idZona');
     }
 
-/*
-    public function pedidos()
-    {
+    public function pedidos()    {
         return $this->hasMany('App\Pedido', 'idZona', 'idZona');
-    }*/
+    }
+
+    //muhcos a muchos
+    public function articulos (){
+        return $this->belongsToMany('App\Articulo', 'ArticuloXZona', 'idZona', 'idArticulo')
+                    ->withPivot('precio');
+    }
 }

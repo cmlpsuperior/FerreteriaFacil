@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 //use agregados por mi
+use App\Zona;
 use App\Articulo;
 use App\UnidadMedida;
 use App\Http\Requests\ArticuloRequest;
@@ -70,5 +71,17 @@ class ArticuloController extends Controller
         $articulo->save();
 
         return Redirect('articulo');
+    }
+
+    public function precioZona ($id){
+
+        $zonas = Zona::orderBy('nombre', 'asc')->get();
+
+        return view('articulo.precioZona', [ 'articulo'=>Articulo::findOrFail($id), 'zonas'=>$zonas  ]); 
+
+    }
+
+    public function precioZona_procesar (Request $request, $id){
+
     }
 }

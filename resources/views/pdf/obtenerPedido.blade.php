@@ -70,8 +70,8 @@
 	            <td>{{ $articulo->pivot->cantidad }}</td>
 	            <td>{{ substr ( $articulo->unidadMedida->nombre,0,3) }}</td>
 	            <td>{{ $articulo->nombre }}</td>
-	            <td id="moneda">{{ number_format($articulo->pivot->precioUnitario, 1, '.',"'")  }}</td>
-	            <td id="moneda">{{ number_format($articulo->pivot->cantidad*$articulo->pivot->precioUnitario, 1, '.',"'") }}</td>
+	            <td id="moneda">{{ number_format($articulo->pivot->precioUnitario, 1, '.'," ")  }}</td>
+	            <td id="moneda">{{ number_format($articulo->pivot->cantidad*$articulo->pivot->precioUnitario, 1, '.'," ") }}</td>
 	        </tr> 
 	        @endforeach
 
