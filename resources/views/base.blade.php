@@ -122,15 +122,33 @@
       <!--Import jQuery before materialize.js-->
       <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
       <script type="text/javascript" src="{{ asset('js/materialize.min.js')}}"></script>
-      
+      <script type="text/javascript" src="{{ asset('dist/jquery.validate.min.js') }}"></script>
       
       <script>
         $(document).ready(function() {
-           
+          
+          //es para que se acomode al formato de materialize (valiation)
+          $.validator.setDefaults({
+                errorClass: 'invalid',
+                validClass: "valid",
+                errorPlacement: function (error, element) {
+                    $(element)
+                        .closest("form")
+                        .find("label[for='" + element.attr("id") + "']")
+                        .attr('data-error', error.text());
+                },
+                submitHandler: function (form) {
+                    console.log('form ok');
+                    form.submit();
+                }
+            });
+
+
           $(".dropdown-button").dropdown();
           $(".button-collapse").sideNav();      /*es para que boton de hamburgesa funcione*/
           
-          $('select').material_select(); 
+          $('select').material_select();
+
           $('.datepicker').pickadate({ /*es para que funcione e datepicker*/
             selectMonths: true, // Creates a dropdown to control month
             selectYears: 200, // Creates a dropdown of 15 years to control year

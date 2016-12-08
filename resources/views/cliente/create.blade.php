@@ -26,7 +26,7 @@
   </div>
 
 
-  <form action="{{ action('ClienteController@store')}}" method="POST">
+  <form action="{{ action('ClienteController@store')}}" method="POST" id="formCliente">
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
     <div class="row">
 
@@ -42,8 +42,8 @@
 
             <div class="row">
 
-              <div class="input-field col s6">
-                <select name="idTipoDocumento">                          
+              <div class="input-field col s6" >
+                <select name="idTipoDocumento" id="idTipoDocumento">                          
                   <option value="">Seleccionar</option>
                   @foreach ($tiposDocumentos as $tipoDoc)
                   <option value="{{$tipoDoc->idTipoDocumento}}" @if ($tipoDoc->idTipoDocumento == 1 ) selected  @endif>{{$tipoDoc->nombre}}</option>
@@ -53,7 +53,7 @@
               </div>
               
               <div class="input-field col s6">
-                <input id="dni" type="number" class="validate" required value="{{ old('numeroDocumento') }}" name="numeroDocumento">
+                <input id="dni" type="number"  value="{{ old('numeroDocumento') }}" name="numeroDocumento">
                 <label for="dni">N° documento <span class="red-text">*</span></label>
               </div>
                           
@@ -64,7 +64,7 @@
             <div class="row">
               
               <div class="input-field col s6">
-                <input id="Nombres" type="text" class="validate"  required value="{{ old('nombres') }}" name="nombres">
+                <input id="Nombres" type="text" value="{{ old('nombres') }}" name="nombres">
                 <label for="Nombres">Nombres <span class="red-text">*</span></label>
               </div>
                           
@@ -73,12 +73,12 @@
             <div class="row"> 
 
               <div class="input-field col s6">
-                <input id="ApellidoPaterno" type="text" class="validate" required value="{{ old('apellidoPaterno') }}" name="apellidoPaterno">
+                <input id="ApellidoPaterno" type="text" value="{{ old('apellidoPaterno') }}" name="apellidoPaterno">
                 <label for="ApellidoPaterno">Apellido paterno <span class="red-text">*</span></label>
               </div>  
 
               <div class="input-field col s6">
-                <input id="ApellidoMaterno" type="text" class="validate" required value="{{ old('apellidoMaterno') }}" name="apellidoMaterno">
+                <input id="ApellidoMaterno" type="text" value="{{ old('apellidoMaterno') }}" name="apellidoMaterno">
                 <label for="ApellidoMaterno">Apellido materno <span class="red-text">*</span></label>
               </div>
               
@@ -119,13 +119,13 @@
 
             <div class="row">
               <div class="input-field col s6">
-                <input id="icon_telephone" type="tel" class="validate" value="{{ old('telefono') }}" name="telefono">
+                <input id="icon_telephone" type="number"  value="{{ old('telefono') }}" name="telefono">
                 <label for="icon_telephone">Teléfono</label>
               </div>
 
               <div class="input-field col s6">
-                <input id="email" type="email" class="validate" value="{{ old('correo') }}" name="correo">
-                <label for="email" data-error="wrong" data-success="right">Correo</label>
+                <input id="email" type="email"  value="{{ old('correo') }}" name="correo">
+                <label for="email" >Correo</label>
               </div>
             </div>
               
@@ -138,11 +138,11 @@
                   <option value="{{$zona->idZona}}" @if ($zona->idZona == old('idZona') ) selected @endif>{{$zona->nombre}}</option>
                   @endforeach
                 </select>
-                <label>Zona</label>
+                <label for="idZona">Zona</label>
               </div>    
 
               <div class="input-field col s6">
-                <input id="direccion" type="text" class="validate" value="{{ old('direccion') }}" name="direccion">
+                <input id="direccion" type="text"  value="{{ old('direccion') }}" name="direccion">
                 <label for="direccion">Dirección</label>
               </div>          
             </div>
@@ -158,7 +158,7 @@
     <div class="row">
       <div class="input-field col s12 right-align">
         <a class="waves-effect waves-light btn blue" href="{{ url('cliente')}}">Cancelar</a>
-        <button class="btn blue waves-effect waves-light" type="submit" name="action">Registrar
+        <button class="btn blue waves-effect waves-light" type="submit" name="action" id="btnRegistrar">Registrar
           <i class="material-icons right">send</i>
         </button>                
       </div>              
@@ -170,4 +170,63 @@
 </div>
         
 
+@stop
+
+
+@section ('scriptcontenido')
+<script>
+$(document).ready(function() {
+
+  $('#btnRegistrar').click(function (){
+    $('#formCliente').validate({
+      rules: {
+        idTipoDocumento: {
+          required: true
+        },
+        nombres: {
+          required: true
+        },
+        apellidoPaterno: {
+          required: true
+        },
+        apellidoMaterno: {
+          required: true
+        },
+        numeroDocumento: {
+          required: true,
+          minlength: 8
+        }
+
+      },
+      messages: {
+        idTipoDocumento: {
+          required: 'Seleccione un campo'
+        },
+        nombres: {
+          required: 'Ingrese su nombre'
+        },
+        apellidoPaterno: {
+          required: 'Ingrese su apellido'
+        },
+        apellidoMaterno: {
+          required: 'Ingrese su apellido'
+        },
+        numeroDocumento: {
+          required: 'Ingrese su numero de documento',
+          minlength: 'Debe tener al menos 8 digitos'
+        }
+
+
+
+      }
+
+
+
+    });
+
+
+  });
+
+});
+</script>
 @stop
