@@ -43,13 +43,13 @@
             <div class="row">
 
               <div class="input-field col s6" >
-                <select name="idTipoDocumento" id="idTipoDocumento" class="valid">                          
+                <select name="idTipoDocumento" id="idTipoDocumento" class="form-control">                          
                   <option value="">Seleccionar</option>
                   @foreach ($tiposDocumentos as $tipoDoc)
                   <option value="{{$tipoDoc->idTipoDocumento}}" @if ($tipoDoc->idTipoDocumento == 1 ) selected  @endif>{{$tipoDoc->nombre}}</option>
                   @endforeach
                 </select>
-                <label>Documento <span class="red-text">*</span></label>
+                <label for="idTipoDocumento">Documento <span class="red-text">*</span></label>
               </div>
               
               <div class="input-field col s6">
@@ -178,9 +178,12 @@
 $(document).ready(function() {
 
   $('#btnRegistrar').click(function (){
+    
     $('#formCliente').validate({
       rules: {
-        idTipoDocumento: 'required',
+        idTipoDocumento: {
+          required: true
+        },
         nombres: {
           required: true
         },
@@ -197,7 +200,9 @@ $(document).ready(function() {
 
       },
       messages: {
-        
+        idTipoDocumento: {
+          required: 'Seleccione un campo'
+        },
         nombres: {
           required: 'Ingrese su nombre'
         },

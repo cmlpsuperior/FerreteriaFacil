@@ -130,17 +130,13 @@
           
           //es para que se acomode al formato de materialize (valiation)
           $.validator.setDefaults({
-                errorClass: 'invalid',
-                validClass: "valid",
-                errorPlacement: function (error, element) {
-                    $(element)
-                        .closest("form")
-                        .find("label[for='" + element.attr("id") + "']")
-                        .attr('data-error', error.text());
-                },
-                submitHandler: function (form) {
-                    console.log('form ok');
-                    form.submit();
+                ignore: [],
+                errorClass: "invalid form-error",       
+                errorElement : 'div',       
+                errorPlacement: function(error, element) {
+                    
+                    console.log(error);
+                    error.appendTo( element.parent() );
                 }
             });
 

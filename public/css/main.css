@@ -52,3 +52,10 @@ label:not(.active):after {
 }
 
 
+.form-error{
+    color: #D8000C;
+    font-size: 0.7rem;
+    
+}
+
+
